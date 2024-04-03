@@ -1,0 +1,8 @@
+npm i express
+npm i mongoose
+npm i env
+npm i cors
+npm i bcryptjs
+npm i jsonwebtoken
+npm i -D nodemon
+rohit
