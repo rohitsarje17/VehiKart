@@ -22,8 +22,8 @@ vehicleRouter.put('/:id', updateVehicle);
 
 vehicleRouter.delete('/:id', deleteVehicle);
 
-vehicleRouter.put("/:vehicleId/review", updateVehicleReview);
+vehicleRouter.put("/review/:id", updateVehicleReview);
 
-vehicleRouter.put("/:vehicleId/inspect", markVehicleAsInspected);
+vehicleRouter.put("/inspect/:id", markVehicleAsInspected);
 
 export default vehicleRouter;

@@ -5,3 +5,4 @@ npm i cors
 npm i bcryptjs
 npm i jsonwebtoken
 npm i -D nodemon
+npm install express-session

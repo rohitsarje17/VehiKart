@@ -10,17 +10,16 @@ import {
 
 const userRouter = express.Router();
 
-
 userRouter.post('/signup', signup);
 
 userRouter.post('/login', login);
 
-userRouter.get('/users', getAllUsers);
+userRouter.get('/', getAllUsers);
 
-userRouter.get('/users/:id', getUserById);
+userRouter.get('/:id', getUserById);
 
-userRouter.patch('/users/:id', updateUser);
+userRouter.put('/:id', updateUser);
 
-userRouter.delete('/users/:id', deleteUser);
+userRouter.delete('/:id', deleteUser);
 
 export default userRouter;

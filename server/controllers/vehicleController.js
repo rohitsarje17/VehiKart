@@ -24,7 +24,7 @@ export const addVehicle = async (req, res) => {
       mileage,
       price,
       predictedPrice,
-      owner,
+      owner: req.user._id,
       location,
       photos,
       reviews
