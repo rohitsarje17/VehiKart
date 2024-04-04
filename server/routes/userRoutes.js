@@ -8,16 +8,18 @@ import {
   signup
 } from '../controllers/userController';
 
-router.post('/signup', signup);
+const userRouter = express.Router();
 
-router.post('/login', login);
+userRouter.post('/signup', signup);
 
-router.get('/users', getAllUsers);
+userRouter.post('/login', login);
 
-router.get('/users/:id', getUserById);
+userRouter.get('/users', getAllUsers);
 
-router.patch('/users/:id', updateUser);
+userRouter.get('/users/:id', getUserById);
 
-router.delete('/users/:id', deleteUser);
+userRouter.patch('/users/:id', updateUser);
 
-module.exports = router;
+userRouter.delete('/users/:id', deleteUser);
+
+export default userRouter;

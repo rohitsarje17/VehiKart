@@ -33,12 +33,6 @@ const userSchema = new Schema({
       ref: "TestDrive",
     },
   ],
-  reviews: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: "Review",
-    },
-  ],
   inspections: [
     {
       type: mongoose.Types.ObjectId,
