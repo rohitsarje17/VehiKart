@@ -114,20 +114,24 @@ export const updateVehicle = async (req, res) => {
             return res.status(404).json({ message: "Vehicle not found" });
         }
 
-     
-        if (req.user.isExpert) {
-
-            vehicle.review = review;
-            await vehicle.save();
-            return res.status(200).json({ message: "Review updated successfully", vehicle });
-        } else {
+        if (!req.user.isExpert) {
             return res.status(403).json({ message: "You are not authorized to update this review" });
         }
+        if (vehicle.inspectedBy.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "You are not authorized to update this review" });
+        }
+        
+        vehicle.review = review;
+        await vehicle.save();
+        
+        return res.status(200).json({ message: "Review updated successfully", vehicle });
+        
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
 
 import Vehicle from '../models/Vehicle';
 import User from '../models/User';

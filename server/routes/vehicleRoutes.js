@@ -4,7 +4,9 @@ import {
   getAllVehicles,
   getVehicleById,
   updateVehicle,
-  deleteVehicle
+  deleteVehicle,
+  updateVehicleReview,
+  markVehicleAsInspected,
 } from '../controllers/vehicleController';
 
 const vehicleRouter = express.Router();

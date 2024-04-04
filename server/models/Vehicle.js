@@ -40,5 +40,9 @@ const vehicleSchema = new Schema({
       type: Boolean,
       default: false,
     },
+    inspectedBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
   });
   
