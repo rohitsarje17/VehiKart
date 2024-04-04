@@ -1,15 +1,12 @@
-// routes/userRoutes.js
-
-const express = require('express');
-const router = express.Router();
-const {
-  signup,
+import express from 'express';
+import {
   login,
   getUserById,
   updateUser,
   deleteUser,
-  getAllUsers
-} = require('../controllers/userController');
+  getAllUsers,
+  signup
+} from '../controllers/userController';
 
 router.post('/signup', signup);
 
