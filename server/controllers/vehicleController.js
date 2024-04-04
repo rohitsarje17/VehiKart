@@ -128,3 +128,35 @@ export const updateVehicle = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+import Vehicle from '../models/Vehicle';
+import User from '../models/User';
+
+export const markVehicleAsInspected = async (req, res) => {
+  try {
+    const { vehicleId } = req.params;
+    const { userId } = req.user; 
+
+    const vehicle = await Vehicle.findById(vehicleId);
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found" });
+    }
+
+    vehicle.isInspected = true;
+    vehicle.inspectedBy = userId; 
+    await vehicle.save();
+
+   
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.inspections.push(vehicleId);
+    await user.save();
+
+    res.status(200).json({ message: "Vehicle marked as inspected", vehicle });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

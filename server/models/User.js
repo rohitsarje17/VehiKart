@@ -36,7 +36,7 @@ const userSchema = new Schema({
   inspections: [
     {
       type: mongoose.Types.ObjectId,
-      ref: "Inspection",
+      ref: "Vehicle",
     },
   ],
 });
