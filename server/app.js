@@ -2,6 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import userRouter from "./routes/userRoutes";
+import vehicleRouter from "./routes/vehicleRoutes";
+import testDriveRouter from "./routes/testDriveRoutes";
 
 
 dotenv.config();
@@ -13,6 +16,9 @@ app.use(express.json());
 
 // Routes
 
+app.use("/user",userRouter);
+app.use("/vehicle",vehicleRouter);
+app.use("/testdrive",testDriveRouter);
 
 // MongoDB connection
 mongoose
