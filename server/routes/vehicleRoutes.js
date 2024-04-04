@@ -12,16 +12,14 @@ const vehicleRouter = express.Router();
 
 vehicleRouter.post('/', addVehicle);
 
-
 vehicleRouter.get('/', getAllVehicles);
-
 
 vehicleRouter.get('/:id', getVehicleById);
 
-
 vehicleRouter.put('/:id', updateVehicle);
 
-
 vehicleRouter.delete('/:id', deleteVehicle);
+
+vehicleRouter.put("/:vehicleId/review", updateVehicleReview);
 
 export default vehicleRouter;

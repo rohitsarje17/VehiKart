@@ -33,5 +33,9 @@ const vehicleSchema = new Schema({
     },
     photos: [String],
     reviews: [String], 
+    isInspected: {
+      type: Boolean,
+      default: false,
+    },
   });
   

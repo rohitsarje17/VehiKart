@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const bookingSchema = new Schema({
+const testDriveSchema = new Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
@@ -24,4 +24,4 @@ const bookingSchema = new Schema({
   },
 });
 
-export default mongoose.model("Booking", bookingSchema);
+export default mongoose.model("TestDrive", testDriveSchema);
