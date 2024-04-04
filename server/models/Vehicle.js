@@ -1,3 +1,7 @@
+import mongoose from "mongoose";
+
+const Schema = mongoose.Schema;
+
 const vehicleSchema = new Schema({
     brand: {
       type: String,
@@ -46,3 +50,4 @@ const vehicleSchema = new Schema({
     },
   });
   
+  export default mongoose.model("Vehicle", vehicleSchema);
