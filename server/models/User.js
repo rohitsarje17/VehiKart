@@ -27,7 +27,7 @@ const userSchema = new Schema({
       ref: "Vehicle",
     },
   ],
-  testDriveBookings: [
+  requestedTestDrives: [
     {
       type: mongoose.Types.ObjectId,
       ref: "TestDrive",

@@ -65,7 +65,6 @@ export const updateUser = async (req, res, next) => {
       hashedPassword = await bcrypt.hash(password, 10);
     }
 
-    // Update user
     const updatedUser = await User.findByIdAndUpdate(
       id,
       { name, email, ...(password && { password: hashedPassword }) },

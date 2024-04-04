@@ -16,7 +16,6 @@ export const requestTestDrive = async (req, res) => {
   }
 };
 
-
 export const acceptTestDrive = async (req, res) => {
   try {
     const { id } = req.params;
@@ -34,3 +33,18 @@ export const acceptTestDrive = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getPendingTestDrives = async (req, res) => {
+    try {
+
+      const pendingTestDrives = await TestDrive.find({ status: "Pending" })
+        .populate("user") 
+        .populate("vehicle"); 
+  
+      res.status(200).json({ pendingTestDrives });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+
+  
