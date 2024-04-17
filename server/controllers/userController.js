@@ -12,7 +12,7 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const signup = async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { name, email, password ,isExpert} = req.body;
   try {
  
     const existingUser = await User.findOne({ email });
@@ -23,7 +23,7 @@ export const signup = async (req, res, next) => {
  
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ name, email, password: hashedPassword });
+    const newUser = new User({ name, email, password: hashedPassword ,isExpert});
     await newUser.save();
 
     return res.status(201).json({ user: newUser });
@@ -33,7 +33,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
-export const login = async (req, res, next) => {
+export  const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
   
@@ -103,36 +103,40 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getUserById = async (req, res, next) => {
-    const { id } = req.params;
-    try {
-      
-      const user = await User.findById(id);
-  
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-     
-      await user.populate('addedVehicles').execPopulate();
-  
+  const { id } = req.params;
+  try {
+      let user = await User.findById(id)
+                             .populate({
+                                path: "addedVehicles",
+                                select: "manufacturer model photos",
+                            
+                             })
+                             .populate({
+                                path: "requestedTestDrives",
+                                populate: {
+                                  path: "vehicle",
+                                  select: "manufacturer model photos"
+                                }
+                               });
 
-      await user.populate({
-        path: 'testDriveBookings',
-        populate: { path: 'vehicle' }
-      }).execPopulate();
-  
-   
-      if (user.isExpert) {
-        await user.populate({
-          path: 'inspections',
-          populate: { path: 'vehicle' }
-        }).execPopulate();
+                               if (user && user.isExpert) {
+
+                                user = await User.populate(user, {
+                                  path: "inspectedVehicles"
+                                });
+                              }
+                            
+
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
       }
-  
+
       return res.status(200).json({ user });
-    } catch (err) {
+  } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Internal Server Error" });
-    }
-  };
-  
+  }
+};
+
+
+

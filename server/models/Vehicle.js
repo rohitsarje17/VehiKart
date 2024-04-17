@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const vehicleSchema = new Schema({
-    brand: {
+    manufacturer: {
       type: String,
       required: true,
     },
@@ -35,8 +35,12 @@ const vehicleSchema = new Schema({
       type: String,
       required: true,
     },
+    contactNumber: {
+      type: String, 
+      required: true,
+    },
     photos: [String],
-    reviews: {
+    review: {
       type:String,
       default:null,
     },
@@ -50,4 +54,4 @@ const vehicleSchema = new Schema({
     },
   });
   
-  export default mongoose.model("Vehicle", vehicleSchema);
+export default mongoose.model("Vehicle", vehicleSchema);

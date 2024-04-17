@@ -1,41 +1,52 @@
 import Vehicle from '../models/Vehicle';
 import User from '../models/User';
+import mongoose  from 'mongoose';
 
 
 export const addVehicle = async (req, res) => {
   try {
     const {
-      brand,
+      manufacturer,
       model,
       year,
       mileage,
       price,
-      predictedPrice,
-      owner,
       location,
       photos,
-      reviews
+      userId,
+      contactNumber 
     } = req.body;
 
     const newVehicle = new Vehicle({
-      brand,
+      manufacturer,
       model,
       year,
       mileage,
       price,
-      predictedPrice,
-      owner: req.user._id,
+      owner: userId,
       location,
+      contactNumber, 
       photos,
-      reviews
     });
 
-    const savedVehicle = await newVehicle.save();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    const savedVehicle = await newVehicle.save({ session });
+
+    const existingUser = await User.findById(userId);
+    existingUser.addedVehicles.push(savedVehicle);
+    await existingUser.save({ session });
+
+    await session.commitTransaction();
+
     res.status(201).json(savedVehicle);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 export const getAllVehicles = async (req, res) => {
   try {
@@ -49,7 +60,14 @@ export const getAllVehicles = async (req, res) => {
 
 export const getVehicleById = async (req, res) => {
   try {
-    const vehicle = await Vehicle.findById(req.params.id);
+    const vehicle = await Vehicle.findById(req.params.id).populate({
+      path: "owner",
+      select: "name"
+    })
+    .populate({
+      path:"inspectedBy",
+      select:"name",
+    });
     if (!vehicle) {
       return res.status(404).json({ message: 'Vehicle not found' });
     }
@@ -58,6 +76,7 @@ export const getVehicleById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 export const updateVehicle = async (req, res) => {
     try {
@@ -134,29 +153,36 @@ export const updateVehicle = async (req, res) => {
 
 export const markVehicleAsInspected = async (req, res) => {
   try {
-    const { vehicleId } = req.params;
-    const { userId } = req.user; 
+    const vehicleId= req.params.id;
+    const { userId } = req.body;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     const vehicle = await Vehicle.findById(vehicleId);
     if (!vehicle) {
+      await session.abortTransaction();
       return res.status(404).json({ message: "Vehicle not found" });
     }
 
     vehicle.isInspected = true;
-    vehicle.inspectedBy = userId; 
-    await vehicle.save();
+    vehicle.inspectedBy = userId;
+    await vehicle.save({ session });
 
-   
     const user = await User.findById(userId);
     if (!user) {
+      await session.abortTransaction();
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.inspections.push(vehicleId);
-    await user.save();
+    user.inspectedVehicles.push(vehicle);
+    await user.save({ session });
+
+    await session.commitTransaction();
 
     res.status(200).json({ message: "Vehicle marked as inspected", vehicle });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
