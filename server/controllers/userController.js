@@ -57,14 +57,14 @@ export  const login = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   const { id } = req.params;
-  const { name, email, password, isExpert } = req.body; // Include isExpert in the request body
+  const { name, email, password, isExpert , phoneNumber } = req.body; // Include isExpert in the request body
   try {
     let hashedPassword;
     if (password) {
       hashedPassword = await bcrypt.hash(password, 10);
     }
 
-    const updateFields = { name, email, ...(password && { password: hashedPassword }) };
+    const updateFields = { name, email,phoneNumber, ...(password && { password: hashedPassword }) };
     
     if (isExpert !== undefined) {
       updateFields.isExpert = isExpert;

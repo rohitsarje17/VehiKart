@@ -124,17 +124,42 @@ export const getPendingTestDrives = async (req, res) => {
   
     try {
       const testDrive = await TestDrive.findById(testDriveId)
-        .populate("user")
-        .populate("vehicle");
+        .populate({
+          path: "user",
+          select: "name email contactNumber"
+        })
+        .populate({
+          path: "vehicle",
+          select: "manufacturer model location contactNumber photos"
+        });
   
       if (!testDrive) {
         return res.status(404).json({ message: "Test drive not found" });
       }
   
-      res.status(200).json({ testDrive });
+      const response = {
+        requester: {
+          name: `Requester - ${testDrive.user.name}`,
+          email: testDrive.user.email,
+          contactNumber: testDrive.user.contactNumber
+        },
+        vehicle: {
+          manufacturer: testDrive.vehicle.manufacturer,
+          model: testDrive.vehicle.model,
+          location: testDrive.vehicle.location,
+          contactNumber: testDrive.vehicle.contactNumber,
+          photos: testDrive.vehicle.photos
+        },
+        requestedDate: testDrive.requestedDate,
+        status: testDrive.status
+      };
+  
+      res.status(200).json(response);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   };
+  
+  
   
   
