@@ -1,0 +1,11 @@
+.filters-main-container{
+    margin: 0 4%;
+}
+
+.apply-filters{
+    position: fixed;
+    bottom: 0;
+}
+.select-box{
+    margin: 4%;
+}
