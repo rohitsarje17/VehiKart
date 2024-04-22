@@ -6,3 +6,4 @@ npm i bcryptjs
 npm i jsonwebtoken
 npm i -D nodemon
 npm install express-session
+npm install cloudinary
