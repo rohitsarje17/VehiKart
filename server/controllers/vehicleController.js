@@ -3,6 +3,7 @@ import User from '../models/User';
 import mongoose  from 'mongoose';
 import {v2 as cloudinary} from 'cloudinary';
 import fileUpload from 'express-fileupload';
+import TestDrive from '../models/TestDrive';
           
 cloudinary.config({ 
   cloud_name: 'djayfusym', 
@@ -74,10 +75,6 @@ export const addVehicle = async (req, res) => {
 }
 };
 
-
-
-
-
 export const getAllVehicles = async (req, res) => {
   try {
     const vehicles = await Vehicle.find();
@@ -130,50 +127,52 @@ export const updateVehicle = async (req, res) => {
     }
   };
   
-
-
-export const deleteVehicle = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    const vehicle = await Vehicle.findById(id);
-    if (!vehicle) {
-      await session.abortTransaction();
-      return res.status(404).json({ message: 'Vehicle not found' });
-    }
-
-   
-    const usersWhoInspected = await User.find({ inspectedVehicles: id });
-
   
-    await Promise.all(
-      usersWhoInspected.map(async (user) => {
-        user.inspectedVehicles = user.inspectedVehicles.filter(
-          (vehicleId) => vehicleId.toString() !== id
-        );
-        await user.save({ session });
-      })
-    );
+  export const deleteVehicle = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const session = await mongoose.startSession();
+      session.startTransaction();
+  
+      const vehicle = await Vehicle.findById(id);
+      if (!vehicle) {
+        await session.abortTransaction();
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+ 
+      const testDrives = await TestDrive.find({ vehicle: id });
+  
 
+      await TestDrive.deleteMany({ vehicle: id }, { session });
+        const usersWhoInspected = await User.find({ inspectedVehicles: id });
+  
+   
+      await Promise.all(
+        usersWhoInspected.map(async (user) => {
+          user.inspectedVehicles = user.inspectedVehicles.filter(
+            (vehicleId) => vehicleId.toString() !== id
+          );
+          await user.save({ session });
+        })
+      );
+  
+      await User.updateMany(
+        { requestedTestDrives: id },
+        { $pull: { requestedTestDrives: id } },
+        { session }
+      );
+  
     
-    await User.updateMany(
-      { requestedTestDrives: id },
-      { $pull: { requestedTestDrives: id } },
-      { session }
-    );
-
-    // Delete the vehicle
-    await Vehicle.findByIdAndDelete(id, { session });
-
-    await session.commitTransaction();
-
-    res.status(200).json({ message: 'Vehicle deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+      await Vehicle.findByIdAndDelete(id, { session });
+  
+      await session.commitTransaction();
+  
+      res.status(200).json({ message: 'Vehicle deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
 
   
   export const updateVehicleReview = async (req, res) => {
