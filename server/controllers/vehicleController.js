@@ -102,27 +102,50 @@ export const updateVehicle = async (req, res) => {
   };
   
 
-  export const deleteVehicle = async (req, res) => {
-    try {
-      const vehicleId = req.params.id;
-      const userId = req.body.userId; 
-      
-      const vehicle = await Vehicle.findById(vehicleId);
-      if (!vehicle) {
-        return res.status(404).json({ message: 'Vehicle not found' });
-      }
-  
 
-      if (vehicle.owner.toString() !== userId) {
-        return res.status(403).json({ message: 'You are not authorized to delete this vehicle' });
-      }
-  
-      await Vehicle.findByIdAndDelete(vehicleId);
-      res.status(200).json({ message: 'Vehicle deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+export const deleteVehicle = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    const vehicle = await Vehicle.findById(id);
+    if (!vehicle) {
+      await session.abortTransaction();
+      return res.status(404).json({ message: 'Vehicle not found' });
     }
-  };
+
+   
+    const usersWhoInspected = await User.find({ inspectedVehicles: id });
+
+  
+    await Promise.all(
+      usersWhoInspected.map(async (user) => {
+        user.inspectedVehicles = user.inspectedVehicles.filter(
+          (vehicleId) => vehicleId.toString() !== id
+        );
+        await user.save({ session });
+      })
+    );
+
+    
+    await User.updateMany(
+      { requestedTestDrives: id },
+      { $pull: { requestedTestDrives: id } },
+      { session }
+    );
+
+    // Delete the vehicle
+    await Vehicle.findByIdAndDelete(id, { session });
+
+    await session.commitTransaction();
+
+    res.status(200).json({ message: 'Vehicle deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
   
   export const updateVehicleReview = async (req, res) => {
     // const { vehicleId } = req.params.id;
