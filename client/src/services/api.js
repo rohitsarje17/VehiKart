@@ -102,8 +102,8 @@ export const updateVehicle = async (id, vehicleData) => {
   }
 };
 
-export const deleteVehicle = async (id) => {
-  try {
+export const deleteVehicle = async (id,) => {       
+    try {
     const response = await axios.delete(`/vehicle/${id}`);
     return response.data;
   } catch (error) {
@@ -111,7 +111,7 @@ export const deleteVehicle = async (id) => {
   }
 };
 
-export const updateVehicleReview = async (id, reviewData) => {    //id:vehicleId , reviewData : review (string)
+export const updateVehicleReview = async (id, reviewData) => {    //id:vehicleId , reviewData : review (string),userId (must be the one who inspected)
   try {
     const response = await axios.put(`/vehicle/review/${id}`, reviewData);
     return response.data;
