@@ -1,50 +1,79 @@
 import Vehicle from '../models/Vehicle';
 import User from '../models/User';
 import mongoose  from 'mongoose';
+import {v2 as cloudinary} from 'cloudinary';
+import fileUpload from 'express-fileupload';
+          
+cloudinary.config({ 
+  cloud_name: 'djayfusym', 
+  api_key: '423227749291446', 
+  api_secret: 'NJNSVbW8x_ENyk-2KxbzkfNGMzI' 
+});
 
 
 export const addVehicle = async (req, res) => {
   try {
     const {
-      manufacturer,
-      model,
-      year,
-      mileage,
-      price,
-      location,
-      photos, 
-      userId,
-      contactNumber 
+        manufacturer,
+        model,
+        year,
+        mileage,
+        price,
+        location,
+        userId,
+        contactNumber
     } = req.body;
 
+    const files = req.files.photos;
+
+   
+    const uploadedPhotos = await Promise.all(files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.tempFilePath);
+        return result.url;
+    }));
+
     const newVehicle = new Vehicle({
-      manufacturer,
-      model,
-      year,
-      mileage,
-      price,
-      owner: userId,
-      location,
-      contactNumber, 
-      photos, 
+        manufacturer,
+        model,
+        year,
+        mileage,
+        price,
+        owner: userId,
+        location,
+        contactNumber,
+        photos: uploadedPhotos,
     });
 
+ 
     const session = await mongoose.startSession();
     session.startTransaction();
 
-    const savedVehicle = await newVehicle.save({ session });
+    try {
+       
+        const savedVehicle = await newVehicle.save({ session });
 
-    const existingUser = await User.findById(userId);
-    existingUser.addedVehicles.push(savedVehicle);
-    await existingUser.save({ session });
+     
+        const existingUser = await User.findById(userId);
+        existingUser.addedVehicles.push(savedVehicle);
+        await existingUser.save({ session });
 
-    await session.commitTransaction();
+       
+        await session.commitTransaction();
 
-    res.status(201).json(savedVehicle);
-  } catch (error) {
+        res.status(201).json(savedVehicle);
+    } catch (error) {
+
+        await session.abortTransaction();
+        throw error; 
+    } finally {
+       
+        session.endSession();
+    }
+} catch (error) {
     res.status(500).json({ message: error.message });
-  }
+}
 };
+
 
 
 

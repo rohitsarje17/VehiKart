@@ -5,6 +5,7 @@ import cors from "cors";
 import userRouter from "./routes/userRoutes";
 import vehicleRouter from "./routes/vehicleRoutes";
 import testDriveRouter from "./routes/testDriveRoutes";
+import fileUpload from "express-fileupload";
 
 
 dotenv.config();
@@ -14,6 +15,10 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+app.use(fileUpload({
+    useTempFiles:true,
+}));
 
 // Routes
 
