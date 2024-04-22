@@ -40,7 +40,7 @@ const vehicleSchema = new Schema({
       required: true,
     },
     photos: [String],
-    review: {
+    reviews: {
       type:String,
       default:null,
     },

@@ -12,7 +12,7 @@ export const addVehicle = async (req, res) => {
       mileage,
       price,
       location,
-      photos,
+      photos, 
       userId,
       contactNumber 
     } = req.body;
@@ -26,7 +26,7 @@ export const addVehicle = async (req, res) => {
       owner: userId,
       location,
       contactNumber, 
-      photos,
+      photos, 
     });
 
     const session = await mongoose.startSession();
@@ -45,6 +45,7 @@ export const addVehicle = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 
@@ -81,7 +82,7 @@ export const getVehicleById = async (req, res) => {
 export const updateVehicle = async (req, res) => {
     try {
       const vehicleId = req.params.id;
-      const userId = req.user.id;
+      const userId = req.body.userId;
       
       const vehicle = await Vehicle.findById(vehicleId);
       if (!vehicle) {
@@ -104,7 +105,7 @@ export const updateVehicle = async (req, res) => {
   export const deleteVehicle = async (req, res) => {
     try {
       const vehicleId = req.params.id;
-      const userId = req.user.id; 
+      const userId = req.body.userId; 
       
       const vehicle = await Vehicle.findById(vehicleId);
       if (!vehicle) {
@@ -124,23 +125,24 @@ export const updateVehicle = async (req, res) => {
   };
   
   export const updateVehicleReview = async (req, res) => {
-    const { vehicleId } = req.params;
-    const { review } = req.body;
+    // const { vehicleId } = req.params.id;
+    const { reviews , userId} = req.body;
 
     try {
-        const vehicle = await Vehicle.findById(vehicleId);
+      const vehicle = await Vehicle.findById(req.params.id)
         if (!vehicle) {
             return res.status(404).json({ message: "Vehicle not found" });
         }
+        const user = await User.findById(userId);
 
-        if (!req.user.isExpert) {
+        if (!user.isExpert) {
+            return res.status(403).json({ message: "You are not a expert" });
+        }
+        if (vehicle.inspectedBy.toString() !== userId.toString()) {
             return res.status(403).json({ message: "You are not authorized to update this review" });
         }
-        if (vehicle.inspectedBy.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: "You are not authorized to update this review" });
-        }
 
-        vehicle.review = review;
+        vehicle.reviews = reviews;
         await vehicle.save();
         
         return res.status(200).json({ message: "Review updated successfully", vehicle });
