@@ -25,7 +25,7 @@ export const addVehicle = async (req, res) => {
         price,
         location,
         userId,
-        contactNumber
+        contactNumber,
     } = req.body;
 
     const files = req.files.photos;
@@ -35,6 +35,8 @@ export const addVehicle = async (req, res) => {
         const result = await cloudinary.uploader.upload(file.tempFilePath);
         return result.url;
     }));
+    
+    let predictedPrice;
 
     const newVehicle = new Vehicle({
         manufacturer,
@@ -46,6 +48,7 @@ export const addVehicle = async (req, res) => {
         location,
         contactNumber,
         photos: uploadedPhotos,
+        predictedPrice,
     });
 
  
