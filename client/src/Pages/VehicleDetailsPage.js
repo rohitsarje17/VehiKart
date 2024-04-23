@@ -31,6 +31,7 @@ const VehicleDetailsPage = () => {
   const [vehicle, setVehicle] = useState(null);
   const [user, setUser] = useState(null);
   const uid = localStorage.getItem('userId');
+  
   const [reviewData, setReviewData] = useState("");
   // console.log(uid);
   useEffect(() => {
@@ -89,16 +90,15 @@ const handleMarkInspected = async (id, userId) => {
   }
 };
 
-const handleAddReview = async (id, reviewData) => {   
-  try{ 
-    const response = await axios.put(`http://localhost:5000/vehicle/review/${id}`, {reviewData});
-    alert("Review Added successfully!")
+const handleAddReview = async (vehicleId, reviewData) => {
+  try {
+    const response = await axios.put(`http://localhost:5000/vehicle/review/${vehicleId}`, { userId: uid, reviews: reviewData });
+    alert("Review added successfully!");
   } catch (error) {
-    alert("Could not add review. Please try again ")
+    alert("Could not add review. Please try again.");
+    console.error(error);
   }
-  setReviewData("")
 };
-
   if (!vehicle || !user) {
     return <Typography>Loading...</Typography>;
   }
@@ -148,14 +148,16 @@ const handleAddReview = async (id, reviewData) => {
 
       {isExpert && inspectedByUser && (
         <div style={{padding : '2%'}}>
-        <TextField
-                    label="Review"
-                    name="Review"
-                    type="text"
-                    value={reviewData}
-                    onChange={(e) => setReviewData(e.target.value)}
-                    required
-                  />
+          
+          <TextField
+            label="Review"
+            name="Review"
+            type="text"
+            value={reviewData}
+            onChange={(e) => setReviewData(e.target.value)}
+            required
+          />
+
         <Button variant="contained" color="primary" onClick={()=> handleAddReview(id , reviewData)} style={{ marginTop: '10px' }}>
           Add Review
         </Button></div>

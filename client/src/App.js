@@ -5,10 +5,10 @@ import SignIn from './Pages/Signup.js';
 import ListingPage from './Pages/ListingPage.js';
 import PrimarySearchAppBar from './components/navbar.js';
 import Sell from './Pages/Sell.js';
-import Details from './Pages/Details.js';
 import CreateUser from './Pages/CreateUser.js';
 import UserProfilePage from './Pages/Profile.js';
 import VehicleDetailsPage from './Pages/VehicleDetailsPage.js';
+import UpdateVehicle from './Pages/UpdateVehicle.js';
 
 
 function App() {
@@ -22,6 +22,7 @@ function App() {
     <Route element={<UserProfilePage />} path='/profile'></Route>
     <Route element={<Sell />} path='/sell'></Route>
     <Route element={<VehicleDetailsPage />} path='/vehicle/:id'></Route>
+    <Route element={<UpdateVehicle />} path='/vehicle/update/:id'></Route>
     <Route element={<CreateUser />} path='/createAccount'></Route>
 
 

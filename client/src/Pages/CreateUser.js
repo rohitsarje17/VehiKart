@@ -8,10 +8,9 @@ const CreateUser = () => {
     email: '',
     password: '',
     isExpert: false,
+    phoneNumber: '',
   });
-  const handleNavigate = ()=>{
-    
-  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -20,13 +19,13 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/user/signup', formData); // Send POST request to signup endpoint
-      console.log(response.data); // Log the response
-      alert('User created successfully!'); // Show a success message
-      localStorage.setItem("userData", formData);
+      const response = await axios.post('http://localhost:5000/user/signup', formData);
+      console.log(response.data);
+      alert('User created successfully!');
+      localStorage.setItem("userData", JSON.stringify(formData)); // Saving user data to localStorage
     } catch (error) {
       console.error('Error creating user:', error);
-      alert('Failed to create user. Please try again.'); // Show an error message
+      alert('Failed to create user. Please try again.');
     }
   };
 
@@ -34,35 +33,48 @@ const CreateUser = () => {
     <Container maxWidth="sm">
       <Typography variant="h4">Create An Account</Typography>
       <form onSubmit={handleSubmit}>
-      <Box mb={2}>
-        <TextField
-          fullWidth
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        /></Box>
-         <Box mb={2}>
-        <TextField
-          fullWidth
-          type="email"
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        /></Box>
-         <Box mb={2}>
-        <TextField
-          fullWidth
-          type="password"
-          label="Password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        /></Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            type="email"
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            type="password"
+            label="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </Box>
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            label="Phone Number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            required
+          />
+        </Box>
         <div>
           <input
             type="checkbox"
