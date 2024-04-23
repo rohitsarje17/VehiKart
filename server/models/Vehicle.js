@@ -50,10 +50,6 @@ const vehicleSchema = new Schema({
       required:true
     },
 
-    // Fuel_Type:{
-
-    // }
-
     isInspected: {
       type: Boolean,
       default: false,
