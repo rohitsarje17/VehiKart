@@ -44,6 +44,16 @@ const vehicleSchema = new Schema({
       type:String,
       default:null,
     },
+    
+    Kilometers_Driven:{
+      type:Number,
+      required:true
+    },
+
+    // Fuel_Type:{
+
+    // }
+
     isInspected: {
       type: Boolean,
       default: false,
