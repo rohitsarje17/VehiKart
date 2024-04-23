@@ -28,7 +28,7 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
@@ -39,31 +39,6 @@ export default function SignIn() {
     navigate(path);
   }
 
-// const handleSubmit = async (event) => {
-//   event.preventDefault();
-//   const formData = new FormData(event.currentTarget);
-//   const email = formData.get('email');
-//   const password = formData.get('password');
-
-//   try {
-//     const response = await axios.post('http://localhost:5000/user/login', {
-//       email,
-//       password,
-//     });
-    
-//     // Assuming your backend responds with a token upon successful login
-//    // const token = response.data.token;
-
-//     // Do something with the token, like storing it in local storage or state
-//    // localStorage.setItem('token', token);
-
-//     // Redirect to profile page upon successful login 
-//     navigate('/profile');
-//   } catch (error) {
-//     console.error('Error signing in:', error);
-//     // Handle login failure, show an error message or something
-//   }
-// };
 const handleSubmit = async (event) => {
   event.preventDefault();
   const formData = new FormData(event.currentTarget);
@@ -76,18 +51,17 @@ const handleSubmit = async (event) => {
       password,
     });
 
-    // Assuming your backend responds with user data including the user ID
+   
     const { user } = response.data;
 
-    // Store the token and user ID in local storage or state
-   // localStorage.setItem('token', token);
+
     localStorage.setItem('userId', user._id);
 
-    // Redirect to profile page upon successful login
+
     navigate('/profile');
   } catch (error) {
     console.error('Error signing in:', error);
-    // Handle login failure, show an error message or something
+ 
   }
 };
   return (
