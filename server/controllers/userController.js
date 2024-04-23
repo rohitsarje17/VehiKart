@@ -12,7 +12,7 @@ export const getAllUsers = async (req, res, next) => {
 };
 
 export const signup = async (req, res, next) => {
-  const { name, email, password ,isExpert} = req.body;
+  const { name, email, password ,phoneNumber , isExpert} = req.body;
   try {
  
     const existingUser = await User.findOne({ email });
@@ -23,7 +23,7 @@ export const signup = async (req, res, next) => {
  
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ name, email, password: hashedPassword ,isExpert});
+    const newUser = new User({ name, email, phoneNumber ,  password: hashedPassword ,isExpert});
     await newUser.save();
 
     return res.status(201).json({ user: newUser });
