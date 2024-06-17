@@ -188,6 +188,7 @@ export default function PrimarySearchAppBar() {
             variant="h6"
             noWrap
             component="div"
+            onClick={()=> navigate('/')}
           >
             VehiKart
           </Typography>

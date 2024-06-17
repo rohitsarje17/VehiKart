@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ const CreateUser = () => {
     email: '',
     password: '',
     isExpert: false,
-    phoneNumber: '',
+    phoneNumber: '', // New field for phone number
   });
 
   const handleChange = (e) => {
@@ -19,13 +19,13 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/user/signup', formData);
-      console.log(response.data);
-      alert('User created successfully!');
-      localStorage.setItem("userData", JSON.stringify(formData)); // Saving user data to localStorage
+      const response = await axios.post('http://localhost:5000/user/signup', formData); // Send POST request to signup endpoint
+      console.log(response.data); // Log the response
+      alert('User created successfully!'); // Show a success message
+      localStorage.setItem("userData", JSON.stringify(formData)); // Store user data in local storage
     } catch (error) {
       console.error('Error creating user:', error);
-      alert('Failed to create user. Please try again.');
+      alert('Failed to create user. Please try again.'); // Show an error message
     }
   };
 
@@ -68,7 +68,7 @@ const CreateUser = () => {
         <Box mb={2}>
           <TextField
             fullWidth
-            label="Phone Number"
+            label="Phone Number" // New field for phone number
             name="phoneNumber"
             value={formData.phoneNumber}
             onChange={handleChange}

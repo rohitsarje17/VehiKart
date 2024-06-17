@@ -16,9 +16,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 app.use(fileUpload({
-    useTempFiles:true,
-}));
+  useTempFiles:true,
+}))
+
+// app.use(fileUpload({
+//     useTempFiles:true,
+// }));
 
 // Routes
 

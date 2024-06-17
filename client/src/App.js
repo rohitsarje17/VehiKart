@@ -5,6 +5,7 @@ import SignIn from './Pages/Signup.js';
 import ListingPage from './Pages/ListingPage.js';
 import PrimarySearchAppBar from './components/navbar.js';
 import Sell from './Pages/Sell.js';
+import Details from './Pages/Details.js';
 import CreateUser from './Pages/CreateUser.js';
 import UserProfilePage from './Pages/Profile.js';
 import VehicleDetailsPage from './Pages/VehicleDetailsPage.js';

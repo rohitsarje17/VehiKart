@@ -36,7 +36,7 @@ export const addVehicle = async (req, res) => {
         return result.url;
     }));
     
-    let predictedPrice;
+   
 
     const newVehicle = new Vehicle({
         manufacturer,
@@ -48,7 +48,6 @@ export const addVehicle = async (req, res) => {
         location,
         contactNumber,
         photos: uploadedPhotos,
-        predictedPrice,
     });
 
  

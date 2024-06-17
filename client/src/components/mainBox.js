@@ -59,15 +59,16 @@ const handleClick = (path)=>{
       <Grid item xs = {4}>
       <Item>
       <ActionAreaCard image ="https://t3.ftcdn.net/jpg/01/60/22/04/360_F_160220460_0tiUyOCEJCE9FPhGGmMNPdu8LOPFp63g.jpg"
-      title = "Buy and Sell your vehicle Hassle free" 
-      info = "Create account and  you are good to go!! "/>
+      title = "Try and test your ride" 
+      info = "Experts will deliver you your ride according to your convinence "
+       />
+       
        </Item></Grid> 
        <Grid item xs = {4}>
       <Item>
        <ActionAreaCard image ='https://img.freepik.com/premium-vector/car-technical-inspection-flat-vector-illustration-cartoon-employee-repairing-inspecting-car-while-owner-marking-items-giant-list-diagnostic-repair-maintenance-concept-banner-design_179970-5969.jpg' 
-        title = "Buy and Sell your vehicle Hassle free" 
-      info = "Create account and  you are good to go!! "
-       />
+        title = "Inspections from Experts" 
+      info = "Experts in the domain at your service!!"/>
        </Item></Grid>
        <Grid item xs = {4}>
       <Item>

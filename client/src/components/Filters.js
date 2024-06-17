@@ -70,7 +70,7 @@ export default function Filters() {
     </FormControl>
     {value === 'Cars' ?
      <div>
-        Price Range
+        {/* Price Range
         <br></br>
         <span>Minimum Price </span>
         <span>Maximum Price</span>
@@ -87,7 +87,7 @@ export default function Filters() {
         marks
         min={50000}
         max={8000000}
-      />
+      /> */}
       <div className='select-box'>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Maker</InputLabel>
