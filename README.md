@@ -61,5 +61,5 @@ npm start
 ## Authors
 
 - [@RohitSarje](https://github.com/rohitsarje17)
-- [@DhananjaySonwane](https://github.com/dhananjay-23)
+- [@DhananjaySonawane](https://github.com/dhananjay-23)
 
