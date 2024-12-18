@@ -18,10 +18,11 @@ A full-stack web application for vehicle reselling that streamlines listings, ma
 
 ## Screenshots
 
-![HomePage](ScreenShots/HomePage.PNG)
+
 ![Vehicle Listing](ScreenShots/VehicleList.PNG)
 ![Add a Vehicle](ScreenShots/AddVehicle.PNG)
 ![Vehicle Details](ScreenShots/VehicleDetails.PNG)
+![HomePage](ScreenShots/HomePage.PNG)
 
 
 ## Run Locally
@@ -59,5 +60,6 @@ npm start
 
 ## Authors
 
-- [@rohitsarje](https://github.com/rohitsarje17)
+- [@RohitSarje](https://github.com/rohitsarje17)
+- [@DhananjaySonwane](https://github.com/dhananjay-10)
 
